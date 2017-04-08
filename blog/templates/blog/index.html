@@ -1,0 +1,53 @@
+{% extends 'blog/base.html' %}
+{% load staticfiles i18n chinesename_tags mathfilters %}
+{% block title %} {{ title }}{% endblock %}
+{% block content %}
+    {% for blog in blog_list %}
+        <section class="well-lg">
+            <h2><a href="{% url 'blog:view_blog' slug=blog.slug %}">{{ blog.title }}</a></h2>
+            <code class="text-muted glyphicon glyphicon-pencil">
+                <a href="{% url 'blog:search' %}?author={{ blog.author }}">
+                    {{ blog.author|chinese_name }}
+                </a>
+            </code>
+            <hr style="border: none; margin: 10px">
+            <code class="text-muted glyphicon glyphicon-time">
+                {{ blog.pub_date|date:'Y-m-d' }}
+            </code>
+            <hr style="border: none; margin: 15px">
+            <p>
+                {{ blog.content|slice:":256"|linebreaksbr }}{% if blog.content|length > 256 %}...{% endif %}</p>
+            <hr style="border: none; margin: 15px">
+            <code>
+                <a class="text-info btn-xs" href="{% url 'blog:view_blog' slug=blog.slug %}">
+                    Read More...
+                </a>
+            </code>
+            <hr style="border: none; margin: 20px">
+            <code><a class="icon-comments text-success" href="{% url 'blog:view_blog' slug=blog.slug %}#comments">
+                ({{ blog.comments.count }})
+            </a></code>
+            <hr style="border: none; margin: 20px">
+            <span>
+            {% for tag in blog.tags.all %}
+                <code><a class="glyphicon glyphicon-tag text-muted"
+                         href="{% url 'blog:search' %}?tags={{ tag.name }}">{{ tag.name }}</a></code>
+            {% endfor %}
+            </span>
+            <hr>
+        </section>
+    {% endfor %}
+    <div>
+        {% if blog_list.has_previous %}
+            <a class="btn glyphicon glyphicon-arrow-left col-lg-2"
+               href="{{ request.path }}?page={{ blog_list.previous_page_number }}">
+                Prev
+            </a>{% endif %}
+        <div class="col-lg-8"></div>
+        {% if blog_list.has_next %}
+            <a class="btn glyphicon glyphicon-arrow-right col-lg-2"
+               href="{{ request.path }}?page={{ blog_list.next_page_number }}">
+                Next
+            </a>{% endif %}
+    </div>
+{% endblock %}

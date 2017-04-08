@@ -1,0 +1,106 @@
+{% extends 'blog/base.html' %}
+{% load staticfiles i18n chinesename_tags %}
+{% block title %}{{ blog.title }}{% endblock %}
+{% block content %}
+    <section class="form-group">
+        <h2 class="text-primary">{{ blog.title }}</h2>
+        <hr style="margin: 50px; border: none">
+        <small class="text-primary">
+            <code class="glyphicon glyphicon-pencil">
+                <a href="{% url 'blog:search' %}?author={{ blog.author }}" class="h5 text-info">
+                    {{ blog.author|chinese_name }}
+                </a>
+            </code>
+        </small>
+        <hr style="border: none; margin: 10px">
+        <small class="text-muted">
+            <code class="glyphicon glyphicon-time">
+                {{ blog.pub_date|date:'Y-m-d' }}</code>
+        </small>
+        {% ifequal user blog.author %}
+            <hr style="border: none; margin: 10px">
+            <div class="text-muted">
+                <code class="glyphicon glyphicon-edit">
+                    <a href="{% url 'blog:edit_blog' %}?blog_id={{ blog.pk }}" class="h5 text-info">
+                        {% trans 'Edit' %}
+                    </a>
+                </code>
+                <code class="glyphicon glyphicon-remove">
+                    <a href="{% url 'blog:delete_blog' %}?blog_id={{ blog.pk }}" class="h5 text-info confirmation">
+                        {% trans 'Delete' %}
+                    </a>
+                </code>
+            </div>
+        {% endifequal %}
+        <hr style="border: none; margin: 30px">
+        <p>
+        <div class="modal-body">{{ blog.content|linebreaksbr }}</div>
+        <hr style="border: none; margin: 30px">
+        <span>
+            {% for tag in blog.tags.all %}
+                <a class="glyphicon glyphicon-tag text-muted"
+                   href="{% url 'blog:search' %}?tags={{ tag.name }}">{{ tag.name }}</a>
+            {% endfor %}
+        </span>
+        <hr style="margin: 50px">
+        <div id="comments">
+            {% for comment in comments %}
+                <div class="media well-lg" style="padding-right: 40%">
+                    <div class="text-primary h5"><a class="text-primary h5"
+                                                    href="{% url 'blog:search' %}?author={{ comment.author }}">{{ comment.author|chinese_name }}</a>
+                        {% if comment.reply_to != None %}
+                            <small class="text-muted"> replied to</small>
+                            <a href="{% url 'blog:search' %}?author={{ comment.reply_to_author }}"
+                               class="text-primary h5">{{ comment.reply_to_author|chinese_name }}</a>
+                        {% endif %}
+                        {{ comment.pub_date|date:'Y-m-d H:i' }}</div>
+                    <hr style="border: none">
+                    <div class="text-info media-body h4">
+                        {{ comment.content|linebreaksbr }}
+                    </div>
+                    <div class="media-bottom pull-right">
+                        {% if perms.blog.add_comment %}
+                            <a href="#comment_form"
+                               onclick="set_reply('{{ comment.pk }}','{{ comment.author }}','{{ comment.author|chinese_name }}');"
+                               style="padding-right: 20px">Reply</a>
+                        {% endif %}
+                        {% ifequal user comment.author %}
+                            <a href="{% url 'blog:del_comment' %}?comment={{ comment.pk }}&next={{ request.get_full_path|urlencode }}">Delete</a>
+                        {% endifequal %}
+                    </div>
+                </div>
+                <hr style="border: none; margin: 25px">
+            {% endfor %}
+        </div>
+        {% if perms.blog.add_comment %}
+            <hr>
+            <form class="text-muted well-lg" id="comment_form" name="comment_form" method="post" role="form"
+                  action="{% url 'blog:add_comment' %}">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <div class="pull-right" style="padding-right: 40%">
+                    <button type="submit" name="submit" class="glyphicon glyphicon-upload btn btn-xs">
+                        Submit Comment
+                    </button>
+                </div>
+            </form>
+        {% endif %}
+    </section>
+{% endblock %}
+{% block extra_script %}
+    <script>
+        $(document).ready(function () {
+            $('#id_topic').val({{ blog.pk }});
+            $('.confirmation').on('click', function () {
+                return confirm('Are you sure?');
+            });
+        });
+
+        function set_reply(comment_id, author, author_name) {
+            $('#id_reply_to').val(comment_id);
+            $('#id_reply_to_author').val(author);
+            var element = $('label[for=id_content]');
+            element.text(element.text() + " Reply to " + author_name);
+        }
+    </script>
+{% endblock %}

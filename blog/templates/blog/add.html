@@ -1,0 +1,58 @@
+{% extends 'blog/base.html' %}
+{% load staticfiles i18n %}
+{% block title %}Adding New Blog{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'blog/js/bootstrap-tagsinput.min.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div class="well" style="margin: 5%">
+        <form action="{{ request.path }}" method="post" id="blog-form" class="clearfix">
+            {% csrf_token %}
+            <div class="form-group col-md-12">
+                <label class="text-muted">Title</label>
+                <input class="form-control" name="title" id="id_title" type="text" maxlength="50"
+                       value="{{ blog_form.title.value }}" required>
+            </div>
+            <div class="form-group col-md-6"><label class="text-muted">Category</label>
+                <select class="select form-control" name="category" id="id_category" required>
+                    <option value="" class="text-muted">Please select...</option>
+                    {% for category in categories %}
+                    <option value="{{ category.pk }}"{% ifequal blog_form.category.value category.content %} selected="selected"{% endifequal %}>{{ category.content }}</option>
+                    {% endfor %}</select></div>
+            <div class="form-group col-md-6"><label class="text-muted">Tags</label>
+                <input type="text" data-role="tagsinput" id="id_tags" name="tags" class="form-control"
+                       value="{{ tags }}">
+            </div>
+            <div class="form-group col-md-12"><label class="text-muted">Content</label>
+                <textarea name="content" rows="15" cols="80" class="form-control"
+                          required>{{ blog_form.content.value }}</textarea>
+            </div>
+            <input type="hidden" value="{{ user }}" name="author" id="id_author">
+            <input type="hidden" value="{{ blog_id }}" name="blog_id" id="id_blog_id">
+            <div class="form-group col-md-2 pull-right">
+                <button type="submit" id="submit" class="form-control btn-sm text-info glyphicon glyphicon-ok">OK
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{#{% block extra_script %}#}
+{#    <script>#}
+{#        $(document).ready(function () {#}
+{#            $('#submit').on('click', function (event) {#}
+{#                event.preventDefault();#}
+{#                var element = $('#id_tags');#}
+{#                document.getElementById('id_tags').value = $('#id_tags').tagsinput('items');#}
+{#                $('#blog-form').submit();#}
+{#            });#}
+{#            $('#id_tags').on('keypress', function (event) {#}
+{#                if (event.keyCode === 13) {#}
+{#                    event.keyCode = 188;#}
+{#                    event.preventDefault();#}
+{#                }#}
+{#            }).tagsinput({#}
+{#                confirmKeys: [13, 188]#}
+{#            });#}
+{#        });#}
+{#    </script>#}
+{#{% endblock %}#}

@@ -1,0 +1,28 @@
+{% extends 'blog/base.html' %}
+{% load staticfiles i18n %}
+{% block title %}About Me{% endblock %}
+{% block content %}
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4" style="margin: 50px">
+        <p>
+            <img src="{% static 'icons/android-icon-192x192.png' %}" class="img-circle">
+        </p>
+        <hr style="border: none; margin: 30px">
+        <div class="text-info h4" style="margin: 5%">
+            Zile Li (Littsler)
+        </div>
+        <hr style="border: none; margin: 30px">
+        <div class="text-muted" style="margin: 5%">
+            <div align="left">
+                <i class="glyphicon glyphicon-envelope" style="padding-right: 5px"></i>
+                <a href="mailto:littslerli@gmail.com">littslerli@gmail.com</a>
+                <p></p>
+                <i class="icon-weibo" style="padding-right: 5px"></i>
+                <a href="http://www.weibo.com/littsler">@littsler</a>
+                <p></p>
+                <i class="icon-facebook-sign" style="padding-right: 5px"></i>
+                <a href="https://www.facebook.com/littsler.li">Littsler Li</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

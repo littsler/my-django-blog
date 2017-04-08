@@ -1,0 +1,25 @@
+{% extends 'blog/base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+    <div align="middle">
+        {% if form.errors %}
+            <p class="text-warning h4">Your username and password didn't match. Please try again.</p>
+        {% endif %}
+        {% if next %}
+            {% if user.is_authenticated %}
+                <p class="text-warning h4">Insufficient privilege!</p>
+            {% else %}
+                <p class="text-info h4">Please login.</p>
+            {% endif %}
+        {% endif %}
+        <form method="post" action="{% url 'login' %}" class="form-group-lg">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <span>
+                <button class="glyphicon glyphicon-ok text-info btn btn-sm" type="submit">Login</button>
+                <input name="next" type="hidden" value="{{ next }}">
+                <a href="{% url 'password_reset' %}">Password forgotten?</a>
+            </span>
+        </form>
+    </div>
+{% endblock %}

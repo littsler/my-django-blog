@@ -1,0 +1,18 @@
+{% extends 'blog/base.html' %}
+{% load staticfiles i18n %}
+{% block title %}Error{% endblock %}
+{% block content %}
+    <div align="middle">
+        <p>
+            <span class="text-warning text-center h3">
+                <img src="{% static 'svg/exclamation-sign-in-a-circle.svg' %}" height="30" width="30">
+                Error!{{ error }}
+            </span>
+        </p>
+        <p>
+            <span class="text-info text-center h4">
+                {{ message }}
+            </span>
+        </p>
+    </div>
+{% endblock %}
