@@ -125,3 +125,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 BOOTSTRAP_ADMIN_SIDEBAR_MENU = True
+
+STATIC_ROOT = 'static/'
+#
+# STATICFILES_DIRS = [
+#     "static",
+# ]
