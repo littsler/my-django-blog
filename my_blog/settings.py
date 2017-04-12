@@ -25,8 +25,8 @@ SECRET_KEY = '5ep^9ajn0ywaf_^6&fx+iqnpk)kpgpqu-r9(oq@wp!#fz@xo8%'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-        'littsler.pythonanywhere.com',
-        ]
+    'littsler.pythonanywhere.com',
+]
 
 # Application definition
 
@@ -84,17 +84,17 @@ WSGI_APPLICATION = 'my_blog.wsgi.application'
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'littsler$db_blog',
-            'USER': 'littsler',
-            'PASSWORD': 'my-blog-db',
-            'HOST': 'littsler.mysql.pythonanywhere-services.com',
-        },
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#    }
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'littsler$db_blog',
+        'USER': 'littsler',
+        'PASSWORD': 'my-blog-db',
+        'HOST': 'littsler.mysql.pythonanywhere-services.com',
+    },
+    #    'default': {
+    #        'ENGINE': 'django.db.backends.sqlite3',
+    #        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    #    }
 }
 
 # Password validation
